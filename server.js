@@ -29,9 +29,11 @@ app.post('/addNew', (req, res) => {
 app.get('/getNew', (req, res) => {
     const lastTime = parseInt(req.query.lastTime);
     db.find({ time: { $gt: lastTime } }, function (err, docs) {
+
       const result = docs.sort((a, b) => {
         a.time - b.time;
       });
+
       res.send(result);
     });
 });
