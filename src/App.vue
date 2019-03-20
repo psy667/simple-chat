@@ -26,18 +26,17 @@ export default {
       const user = this.user;
       const message = this.message;
       this.message = '';
-      axios.get('http://localhost:3000/addNew', {
-        params: {user, message}})
+      axios.post('http://localhost:4000/addNew', {user, message})
         .then(console.log('success'))
         .catch(e => {
           console.log(e)
         })
     },
     getAll(){
-      axios.get('http://localhost:3000/getAll')
+      axios.get('http://localhost:4000/getNew', {params: {lastTime: 0}})
         .then((response) => {
-          console.log(this);
-          this.messages = response.data.messages;
+          console.log(response);
+          this.messages = response.data;
         })
         .catch(e => {
           console.log(e)
@@ -45,7 +44,7 @@ export default {
     }
   },
   mounted(){
-    setInterval(this.getAll, 1000);
+    setInterval(this.getAll, 500);
   },
   components: {
   }

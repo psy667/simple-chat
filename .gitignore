@@ -1,6 +1,6 @@
 # Logs
-logs
 *.log
+logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -61,3 +61,6 @@ typings/
 .next
 
 .idea/
+
+#database
+messages
