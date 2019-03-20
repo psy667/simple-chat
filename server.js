@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({credentials: true, origin: true}));
 
+app.use(express.static('dist'));
 
 const mess = new Datastore({filename : 'messages'});
 mess.loadDatabase();
@@ -24,6 +25,7 @@ const getColor = (name) => {
 app.get('/', (req, res) => {
   res.sendfile('dist/index.html');
 });
+
 
 
 app.post('/addNew', (req, res) => {
@@ -48,5 +50,5 @@ app.get('/getNew', (req, res) => {
 
 
 
-const port = 4000;
+const port = 80;
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

@@ -39,7 +39,7 @@
                 const user = this.user;
                 const message = this.message;
                 this.message = '';
-                axios.post('http://localhost:4000/addNew', {user, message})
+                axios.post('/addNew', {user, message})
                     .then(() => {
                         this.getAll();
                     })
@@ -50,7 +50,7 @@
             getAll() {
                 if (this.user === "") return false;
 
-                axios.get('http://localhost:4000/getNew', {params: {lastTime: this.lastTime}})
+                axios.get('/getNew', {params: {lastTime: this.lastTime}})
                     .then((response) => {
                         const data = response.data;
 
@@ -75,15 +75,8 @@
         mounted() {
             document.querySelector(".message__input input").focus();
             document.onclick = () => document.querySelector(".message__input input").focus();
-
-            setInterval(this.getAll, 1000);
-        },
-        watch:{
-          messages:(val)=>{
-              console.log(val);
-              window.scrollTop=document.body.scrollHeight;
-              // window.scrollTo(0, document.body.scrollHeight);
-          }
+            window.scrollTop=document.body.scrollHeight;
+            setInterval(this.getAll, 200);
         },
         components: {}
     }
