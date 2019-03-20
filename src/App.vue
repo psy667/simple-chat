@@ -32,7 +32,9 @@
                 const message = this.message;
                 this.message = '';
                 axios.post('http://localhost:4000/addNew', {user, message})
-                  .then(console.log('success'))
+                  .then(()=>{
+                    this.getAll();
+                  })
                   .catch(e => {
                     console.log(e)
                   })
