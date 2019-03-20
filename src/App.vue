@@ -1,8 +1,13 @@
 <template>
     <div id="app">
         <div class="messages" id='messages'>
+            <p style="color:white; margin: 0;">
+                {{ user === "" ? "Enter username :" : "" }}
+            </p>
             <div v-for='message in messages'>
-                <p class="message"><span class="message__user">[{{ message.user }}]:</span> {{ message.text }}</p>
+                <p class="message">
+                    <span :style="{color: message.color}" class="message__user">[{{ message.user }}]:</span> {{ message.text }}
+                </p>
             </div>
         </div>
         <div class="message__input">
@@ -18,7 +23,7 @@
         name: 'app',
         data() {
             return {
-                user: "user",
+                user: "",
                 message: "",
                 messages: [],
                 lastTime: 0
@@ -26,33 +31,46 @@
         },
         methods: {
             sendMessage() {
+                this.login(this.message);
+
                 if (this.message === "") return false;
+                if (this.user === "") return false;
 
                 const user = this.user;
                 const message = this.message;
                 this.message = '';
                 axios.post('http://localhost:4000/addNew', {user, message})
-                  .then(()=>{
-                    this.getAll();
-                  })
-                  .catch(e => {
-                    console.log(e)
-                  })
-                },
-                getAll(){
+                    .then(() => {
+                        this.getAll();
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+            },
+            getAll() {
+                if (this.user === "") return false;
+
                 axios.get('http://localhost:4000/getNew', {params: {lastTime: this.lastTime}})
-                  .then((response) => {
-                    const data = response.data;
-                    console.log(data);
-                    if(data.length){
-                      this.messages.push(...data);
-                      this.lastTime = data[data.length - 1].time;
-                    }
-                  })
-                  .catch(e => {
-                    console.log(e)
-                  })
+                    .then((response) => {
+                        const data = response.data;
+
+                        if (data.length) {
+                            this.messages.push(...data);
+                            this.lastTime = data[data.length - 1].time;
+                        }
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+            },
+            login(str) {
+                if (this.user === "") {
+                    this.user = str;
+                    this.message = "";
+                    return true;
                 }
+                return false;
+            }
         },
         mounted() {
             document.querySelector(".message__input input").focus();
@@ -61,8 +79,10 @@
             setInterval(this.getAll, 1000);
         },
         watch:{
-          messages:()=>{
-              window.scrollTo(0,document.body.scrollHeight);
+          messages:(val)=>{
+              console.log(val);
+              window.scrollTop=document.body.scrollHeight;
+              // window.scrollTo(0, document.body.scrollHeight);
           }
         },
         components: {}
