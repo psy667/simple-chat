@@ -13,8 +13,6 @@ app.use(cors({credentials: true, origin: true}));
 const mess = new Datastore({filename : 'messages'});
 mess.loadDatabase();
 
-const users = new Datastore({filename : 'users'});
-users.loadDatabase();
 
 const getColor = (name) => {
   const colors = ['#ff5e5e', '#ffab5e', '#fff65e', '#b0f957', '#3affdb', '#7970ff'];
